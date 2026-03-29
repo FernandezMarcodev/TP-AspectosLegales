@@ -122,7 +122,7 @@ function HomeScreen({ onNavigate }) {
                 </div>
                 <div>
                   <p className="text-xs font-bold tracking-wider text-emerald-300">INTEGRANTES</p>
-                  <p className="text-sm font-bold text-white">Grupo Unidad 7</p>
+                  <p className="text-sm font-bold text-white">Grupo 3 | Unidad 7</p>
                 </div>
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
