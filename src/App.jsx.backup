@@ -1,0 +1,366 @@
+import './App.css'
+import React, { useState } from 'react'
+import { motion } from 'framer-motion'
+import {
+  ArrowLeft,
+  BadgeInfo,
+  BookOpen,
+  Download,
+  FileText,
+  Gavel,
+  GraduationCap,
+  Map,
+  Presentation,
+  Scale,
+  Sparkles,
+  Users,
+} from 'lucide-react'
+
+const meta = {
+  materia: 'Aspectos legales y sociales de la informática',
+  unidad: 'Unidad 7: Derechos de autor',
+}
+
+const integrantes = ['Valentin', 'Lorena', 'Facundo', 'Nicolás', 'Santiago', 'Rafael']
+
+const temasData = [
+  { id: 1, titulo: 'Propiedad intelectual', icono: '💡' },
+  { id: 2, titulo: 'Dominios', icono: '🌐' },
+  { id: 3, titulo: 'Patentes', icono: '🔬' },
+  { id: 4, titulo: 'Derecho de marcas', icono: '™️' },
+]
+
+const rutas = {
+  presentacion: '/archivos/presentacion/presentacion.pdf',
+  tema: (id) => `/archivos/temas/Tema ${id}.pdf`,
+  mapa: (id) => `/archivos/mapas-mentales/Tema ${id}.pdf`,
+}
+
+function TopBar({ onHome, title }) {
+  return (
+    <div className="sticky top-0 z-20 border-b border-white/10 bg-black/30 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+        <button
+          type="button"
+          onClick={onHome}
+          className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
+        >
+          <ArrowLeft size={16} />
+          Inicio
+        </button>
+
+        <div className="hidden items-center gap-2 sm:flex">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+            <Scale size={18} className="text-amber-200" />
+          </div>
+          <div className="leading-tight">
+            <p className="text-xs font-semibold tracking-[0.18em] text-zinc-400">{meta.materia}</p>
+            <p className="text-sm font-semibold text-white">{title}</p>
+          </div>
+        </div>
+
+        <a
+          href={archivos.presentacion}
+          download
+          target="_blank"
+          rel="noreferrer"
+          className="hidden items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-400 to-emerald-500 px-4 py-2 text-sm font-extrabold text-black transition hover:from-emerald-300 hover:to-emerald-400 sm:inline-flex"
+        >
+          <Download size={16} />
+          📥 Descargar
+        </a>
+      </div>
+    </div>
+  )
+}
+
+function Shell({ children }) {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#0a0f1e] via-[#0d1429] to-[#0a1f1a] text-zinc-100">
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-40 left-1/4 h-[600px] w-[600px] rounded-full bg-emerald-400/15 blur-3xl" />
+        <div className="absolute -bottom-20 right-1/4 h-[500px] w-[500px] rounded-full bg-rose-400/15 blur-3xl" />
+        <div className="absolute left-1/2 top-1/3 h-[400px] w-[400px] rounded-full bg-amber-300/10 blur-3xl" />
+      </div>
+      {children}
+    </div>
+  )
+}
+
+function PdfPanel({ src, title }) {
+  return (
+    <div className="overflow-hidden rounded-3xl border border-white/10 bg-black/30 shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
+      <div className="flex flex-col gap-3 border-b border-white/10 bg-black/30 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+            <FileText size={18} className="text-indigo-200" />
+          </div>
+          <div>
+            <p className="text-sm font-bold text-white">{title}</p>
+            <p className="text-xs text-zinc-400">Vista previa + descarga</p>
+          </div>
+        </div>
+        <a
+          className="inline-flex items-center justify-center gap-2 rounded-2xl bg-indigo-500/90 px-4 py-2 text-sm font-extrabold text-white transition hover:bg-indigo-500"
+          href={src}
+          download
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Download size={16} />
+          Descargar
+        </a>
+      </div>
+      <iframe className="h-[520px] w-full bg-black" src={`${src}#view=FitH`} title={title} />
+    </div>
+  )
+}
+
+function OptionCard({ icon: Icon, title, subtitle, onClick, accent }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.09] to-white/[0.02] p-6 text-left shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_30px_90px_rgba(0,0,0,0.55)] transition hover:-translate-y-1 hover:border-white/20"
+    >
+      <div className={`absolute -right-16 -top-16 h-44 w-44 rounded-full blur-3xl ${accent}`} />
+      <div className="relative">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-black/30">
+          <Icon size={20} className="text-white" />
+        </div>
+        <h3 className="mt-4 text-xl font-extrabold tracking-tight text-white">
+          {title}
+        </h3>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-300">{subtitle}</p>
+        <div className="mt-5 inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-bold text-white transition group-hover:bg-white/10">
+          <Sparkles size={16} className="text-emerald-300" />
+          ✨ Abrir
+        </div>
+      </div>
+    </button>
+  )
+}
+
+function TopicGrid({ title, subtitle, icon: Icon, selected, onSelect, getHref, label }) {
+  return (
+    <div className="grid gap-6 lg:grid-cols-12">
+      <div className="lg:col-span-4">
+        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-black/30">
+              <Icon size={20} className="text-amber-200" />
+            </div>
+            <div>
+              <p className="text-xs font-bold tracking-[0.18em] text-zinc-400">SECCIÓN</p>
+              <p className="text-lg font-extrabold text-white">{title}</p>
+            </div>
+          </div>
+          <p className="mt-4 text-sm leading-relaxed text-zinc-300">{subtitle}</p>
+
+          <div className="mt-6 grid gap-2">
+            {temas.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => onSelect(t.id)}
+                className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm font-bold transition ${
+                  selected === t.id
+                    ? 'border-emerald-400/50 bg-emerald-400/20 text-white shadow-lg shadow-emerald-400/10'
+                    : 'border-white/10 bg-white/[0.03] text-zinc-200 hover:bg-white/[0.06]'
+                }`}
+              >
+                <span>📄 {t.titulo}</span>
+                <span className="text-xs text-emerald-300">👀 Ver</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4">
+            <div className="flex items-start gap-3">
+              <BadgeInfo size={18} className="mt-0.5 text-indigo-200" />
+              <p className="text-xs leading-relaxed text-zinc-300">
+                Cada archivo se puede ver desde la web y descargar. Luego reemplazás
+                los placeholders en la carpeta <span className="font-bold text-white">public/archivos</span>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="lg:col-span-8">
+        <div className="flex flex-col gap-4">
+          <PdfPanel src={getHref(selected)} title={`${label} — ${selected.toUpperCase()}`} />
+          <a
+            href={getHref(selected)}
+            download
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-400 to-emerald-500 px-4 py-2 text-sm font-extrabold text-black transition hover:from-emerald-300 hover:to-emerald-400"
+          >
+            <Download size={16} />
+            📥 Descargar
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function App() {
+  const [screen, setScreen] = useState('home')
+  const [temaSeleccionado, setTemaSeleccionado] = useState('tema-1')
+  const [mapaSeleccionado, setMapaSeleccionado] = useState('tema-1')
+
+  const goHome = () => setScreen('home')
+
+  return (
+    <Shell>
+      <motion.div
+        key={screen}
+        initial={{ opacity: 0, y: 10, filter: 'blur(6px)' }}
+        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+        transition={{ duration: 0.35, ease: 'easeOut' }}
+      >
+        {screen === 'home' ? (
+          <>
+            <div className="border-b border-white/10 bg-black/30 backdrop-blur">
+              <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+                <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                  <div>
+                    <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2">
+                      <Scale size={16} className="text-emerald-300" />
+                      <span className="text-xs font-extrabold tracking-[0.18em] text-emerald-200">
+                        {meta.unidad.toUpperCase()}
+                      </span>
+                    </div>
+                    <h1 className="mt-6 text-4xl font-black tracking-tight text-white sm:text-6xl">
+                      ⚖️ Nuestro material de exposición
+                    </h1>
+                    <p className="mt-4 max-w-2xl text-base leading-relaxed text-zinc-300 sm:text-lg">
+                      {meta.materia}. Acá podés acceder a la presentación, los PDFs
+                      de temas y los mapas mentales. 🎯
+                    </p>
+                  </div>
+
+                  <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-400/30 bg-emerald-400/10">
+                        <GraduationCap size={20} className="text-emerald-300" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold tracking-[0.18em] text-emerald-300">
+                          👥 INTEGRANTES
+                        </p>
+                        <p className="text-sm font-extrabold text-white">
+                          Grupo Unidad 7 🎓
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {integrantes.map((n) => (
+                        <span
+                          key={n}
+                          className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-sm font-semibold text-emerald-100"
+                        >
+                          {n}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+              <div className="grid gap-4 md:grid-cols-3">
+                <OptionCard
+                  icon={Presentation}
+                  title="📊 Presentación"
+                  subtitle="Ver el PDF desde la web y descargarlo."
+                  onClick={() => setScreen('presentacion')}
+                  accent="bg-emerald-400/25"
+                />
+                <OptionCard
+                  icon={BookOpen}
+                  title="📚 Temas"
+                  subtitle="Ver los PDFs de cada tema y descargarlos."
+                  onClick={() => setScreen('temas')}
+                  accent="bg-rose-400/25"
+                />
+                <OptionCard
+                  icon={Map}
+                  title="🗺️ Mapas mentales"
+                  subtitle="Ver y descargar los mapas mentales por tema."
+                  onClick={() => setScreen('mapas')}
+                  accent="bg-amber-300/25"
+                />
+              </div>
+            </main>
+
+            <footer className="border-t border-white/10 bg-black/20">
+              <div className="mx-auto max-w-6xl px-4 py-6 text-xs text-zinc-400 sm:px-6">
+                Hecho por {integrantes.join(', ')} · {meta.materia} · {meta.unidad}
+              </div>
+            </footer>
+          </>
+        ) : null}
+
+        {screen === 'presentacion' ? (
+          <>
+            <TopBar onHome={goHome} title="Presentación" />
+            <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+              <div className="mb-6">
+                <p className="text-xs font-extrabold tracking-[0.18em] text-rose-300">
+                  📊 PRESENTACIÓN
+                </p>
+                <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">
+                  📑 PDF de la exposición
+                </h2>
+                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-300 sm:text-base">
+                  Podés visualizarlo acá mismo o descargarlo. 💾
+                </p>
+              </div>
+              <PdfPanel src={archivos.presentacion} title="Presentación (PDF)" />
+            </main>
+          </>
+        ) : null}
+
+        {screen === 'temas' ? (
+          <>
+            <TopBar onHome={goHome} title="Temas" />
+            <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+              <TopicGrid
+                title="📚 Temas"
+                subtitle="Elegí un tema para ver su PDF y descargarlo. 📝"
+                icon={BookOpen}
+                selected={temaSeleccionado}
+                onSelect={setTemaSeleccionado}
+                getHref={archivos.temas}
+                label="📖 Tema"
+              />
+            </main>
+          </>
+        ) : null}
+
+        {screen === 'mapas' ? (
+          <>
+            <TopBar onHome={goHome} title="Mapas mentales" />
+            <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+              <TopicGrid
+                title="🗺️ Mapas mentales"
+                subtitle="Elegí un tema para ver el mapa mental y descargarlo. 🧠"
+                icon={Map}
+                selected={mapaSeleccionado}
+                onSelect={setMapaSeleccionado}
+                getHref={archivos.mapas}
+                label="🗺️ Mapa mental"
+              />
+            </main>
+          </>
+        ) : null}
+      </motion.div>
+    </Shell>
+  )
+}
+
+export default App
