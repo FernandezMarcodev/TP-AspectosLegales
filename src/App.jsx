@@ -18,7 +18,7 @@ const meta = {
   unidad: 'Unidad 7: Derechos de autor',
 }
 
-const integrantes = ['Rafael García', 'Lorena Gomez', 'Nicolás García', 'Facundo Domínguez', 'Valentin Fernández']
+const integrantes = ['Rafael García', 'Lorena Gomez', 'Nicolás García', 'Facundo Domínguez', 'Valentin Fernández', 'Santiago Carrillo']
 
 const temasData = [
   { id: 1, titulo: 'Propiedad intelectual', icono: '💡' },
