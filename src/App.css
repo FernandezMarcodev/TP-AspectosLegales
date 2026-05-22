@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Merriweather:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
+
 #root {
   width: 100%;
 }
@@ -9,9 +11,6 @@
   --legal-bg-from: #FBFBFC;
   --legal-bg-to: #FFFFFF;
 }
-
-/* Importar tipografía serif desde Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Merriweather:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
 
 /* Tipografía */
 * {

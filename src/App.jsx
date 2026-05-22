@@ -238,6 +238,16 @@ function PdfViewerModal({ src, label, onClose }) {
   const [error, setError] = useState(null)
   const containerRef = useRef(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent))
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   React.useEffect(() => {
     let mounted = true
@@ -318,10 +328,20 @@ function PdfViewerModal({ src, label, onClose }) {
     <div ref={containerRef} className={`fixed inset-0 z-50 ${isFullscreen ? 'bg-black' : 'flex items-center justify-center bg-black/50 backdrop-blur-sm p-4'}`}>
       <div className={`${isFullscreen ? 'w-full h-full rounded-none bg-black' : 'w-full max-w-4xl rounded-2xl bg-slate-50 shadow-2xl overflow-hidden'}`}>
         <div className={`flex items-center justify-between px-6 py-4 ${isFullscreen ? 'absolute top-4 left-4 right-4 z-50' : 'border-b border-slate-300/30 bg-gradient-to-r from-slate-50 to-slate-100'}`}>
-          <p className={`${isFullscreen ? 'text-white font-semibold' : 'font-serif font-bold text-slate-800'}`}>{label}</p>
-          <div className="flex items-center gap-3">
+          <p className={`${isFullscreen ? 'text-white font-semibold' : 'font-serif font-bold text-slate-800 text-sm sm:text-base'}`}>{label}</p>
+          <div className="flex items-center gap-2 sm:gap-3">
+            {!isImage && (
+              <a
+                href={src}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs px-2.5 py-1.5 rounded-lg bg-blue-50 text-blue-600 border border-blue-200/50 hover:bg-blue-100 font-semibold"
+              >
+                Abrir completo
+              </a>
+            )}
             {!isFullscreen && (
-              <button onClick={toggleFullscreen} className="text-sm px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700">
+              <button onClick={toggleFullscreen} className="hidden sm:inline-block text-xs px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold">
                 Pantalla completa
               </button>
             )}
@@ -343,11 +363,42 @@ function PdfViewerModal({ src, label, onClose }) {
             {loading && <div className="p-6 text-center text-sm text-slate-600">Cargando documento...</div>}
             {error && <div className="p-6 text-center text-sm text-rose-600">{error}</div>}
             {!loading && !error && (
-              <iframe
-                className={`${isFullscreen ? 'h-full' : 'h-96 sm:h-[600px]'} w-full`}
-                src={blobUrl ? `${blobUrl}#view=FitH` : undefined}
-                title={label}
-              />
+              <>
+                {isMobile ? (
+                  <div className="flex flex-col items-center justify-center p-8 bg-white text-center rounded-b-2xl">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-50 text-amber-500 mb-4 shadow-inner">
+                      <FileText size={32} />
+                    </div>
+                    <h3 className="text-lg font-bold text-slate-800 font-serif">Visualización Móvil</h3>
+                    <p className="mt-2 text-sm text-slate-600 max-w-sm leading-relaxed">
+                      Para una visualización fluida, abre este documento directamente en el visor de PDFs nativo de tu teléfono.
+                    </p>
+                    <div className="mt-6 flex flex-col gap-3 w-full max-w-xs">
+                      <a
+                        href={src}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 px-5 py-3 text-sm font-semibold text-slate-900 shadow-md hover:from-amber-300 hover:to-amber-400 transition"
+                      >
+                        Abrir Documento (PDF)
+                      </a>
+                      <a
+                        href={src}
+                        download
+                        className="w-full flex items-center justify-center gap-2 rounded-2xl border border-slate-300 bg-slate-50 px-5 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-100 transition"
+                      >
+                        Descargar Archivo
+                      </a>
+                    </div>
+                  </div>
+                ) : (
+                  <iframe
+                    className={`${isFullscreen ? 'h-full' : 'h-96 sm:h-[600px]'} w-full`}
+                    src={blobUrl ? `${blobUrl}#view=FitH` : undefined}
+                    title={label}
+                  />
+                )}
+              </>
             )}
           </div>
         )}
