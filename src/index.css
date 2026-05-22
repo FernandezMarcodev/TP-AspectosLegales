@@ -1,13 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Merriweather:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  /* Colores temáticos */
+  --color-primary: #0B1F3B;
+  --color-accent: #D97706;
+  --color-text: #1E293B;
+  --color-text-light: #64748B;
 }
 
 html {
@@ -17,12 +25,95 @@ html {
 html,
 body {
   height: 100%;
+  background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
 }
 
 body {
   margin: 0;
+  font-family: 'Inter', sans-serif;
+  color: var(--color-text);
+  line-height: 1.6;
 }
 
 #root {
   min-height: 100%;
+}
+
+/* Tipografía serif personalizada */
+@layer components {
+  .font-serif {
+    @apply font-['Playfair_Display'];
+    letter-spacing: -0.5px;
+  }
+  
+  .font-display {
+    @apply font-serif font-black;
+  }
+}
+
+/* Utilidades académicas */
+@layer utilities {
+  .text-accent {
+    @apply text-amber-600;
+  }
+  
+  .border-accent {
+    @apply border-amber-400;
+  }
+  
+  .bg-accent {
+    @apply bg-gradient-to-r from-amber-400 to-amber-500;
+  }
+  
+  .card-legal {
+    @apply rounded-xl border border-slate-300/50 bg-gradient-to-br from-white to-slate-50 shadow-sm transition hover:shadow-md;
+  }
+  
+  .btn-primary {
+    @apply rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-3 font-semibold text-white transition hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg;
+  }
+  
+  .btn-secondary {
+    @apply rounded-lg border border-slate-300/50 bg-gradient-to-r from-slate-100 to-slate-50 px-6 py-3 font-semibold text-slate-900 transition hover:border-slate-400/50 shadow-sm hover:shadow-md;
+  }
+  
+  .btn-accent {
+    @apply rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 px-6 py-3 font-semibold text-slate-900 transition hover:from-amber-300 hover:to-amber-400 shadow-md hover:shadow-lg;
+  }
+}
+
+/* Scroll personalizado */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(203, 213, 225, 0.5);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(203, 213, 225, 0.8);
+}
+
+/* Efectos de transición suaves */
+* {
+  @apply transition-colors duration-200;
+}
+
+button,
+a {
+  @apply transition-all duration-300;
+}
+
+/* Responsive */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    @apply !transition-none;
+  }
 }

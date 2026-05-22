@@ -1,0 +1,4 @@
+<!-- QR Placeholder -->
+<!-- Reemplaza este archivo con tu código QR real en formato PNG/JPG -->
+
+Este es un placeholder. Cuando cargues tu código QR real, colócalo en esta carpeta con el nombre exacto: qr-code.png
