@@ -873,60 +873,23 @@ function RoscoScreen() {
             </div>
           </div>
 
-          {/* Vista Mobile: grilla de botones */}
-          <div className="mb-8 lg:hidden">
-            <div className="mb-4 flex items-center justify-center gap-3">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-100 to-amber-200 text-center shadow">
-                <div>
-                  <p className="text-[9px] uppercase tracking-widest text-slate-500">ROSCO</p>
-                  <p className="text-sm font-bold text-slate-900">Legal</p>
-                </div>
-              </div>
-            </div>
-            <div className="grid grid-cols-5 sm:grid-cols-7 gap-2">
-              {roscoDatos.map((dato) => {
-                const estado = estadoRosco[dato.letra]
-                return (
-                  <button
-                    key={dato.letra}
-                    type="button"
-                    onClick={() => {
-                      setLetraSeleccionada(dato.letra)
-                      setMostrarRespuesta(false)
-                    }}
-                    className={`flex aspect-square w-full items-center justify-center rounded-2xl border-2 border-white/40 shadow transition-transform duration-150 active:scale-95 focus:outline-none ${
-                      estado === 'green'
-                        ? 'bg-emerald-500 text-white'
-                        : estado === 'blue'
-                        ? 'bg-sky-500 text-white'
-                        : estado === 'red'
-                        ? 'bg-rose-500 text-white'
-                        : 'bg-amber-400 text-slate-900'
-                    } ${letraSeleccionada === dato.letra ? 'ring-4 ring-amber-300 scale-105' : ''}`}
-                  >
-                    <span className="font-serif font-bold text-base select-none">{dato.letra}</span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* Vista Desktop: rueda circular */}
-          <div className="relative mx-auto mb-12 hidden lg:block h-[520px] w-[520px] max-w-full rounded-full border border-slate-200 bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 shadow-inner">
+          {/* Rueda circular responsiva */}
+          <div className="relative mx-auto mb-12 aspect-square w-full max-w-[520px] rounded-full border border-slate-200 bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 shadow-inner">
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-amber-100 to-amber-200 text-center shadow-lg">
+              <div className="flex aspect-square w-[25%] items-center justify-center rounded-full bg-gradient-to-br from-amber-100 to-amber-200 text-center shadow-lg">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.35em] text-slate-500">ROSCO</p>
-                  <p className="mt-1 text-2xl font-semibold text-slate-900">Legal</p>
+                  <p className="text-[8px] sm:text-xs uppercase tracking-[0.35em] text-slate-500">ROSCO</p>
+                  <p className="mt-0 sm:mt-1 text-sm sm:text-2xl font-semibold text-slate-900">Legal</p>
                 </div>
               </div>
             </div>
             {roscoDatos.map((dato, idx) => {
               const estado = estadoRosco[dato.letra]
               const angleRad = (idx / roscoDatos.length) * Math.PI * 2
-              const radius = 220
-              const left = `calc(50% + ${Math.cos(angleRad) * radius}px)`
-              const top = `calc(50% + ${Math.sin(angleRad) * radius}px)`
+              // Usamos porcentaje para el radio así escala con el contenedor
+              const radiusPercent = 42; 
+              const left = `${50 + Math.cos(angleRad) * radiusPercent}%`
+              const top = `${50 + Math.sin(angleRad) * radiusPercent}%`
               return (
                 <button
                   key={dato.letra}
@@ -936,7 +899,7 @@ function RoscoScreen() {
                     setMostrarRespuesta(false)
                   }}
                   style={{ position: 'absolute', left, top, transform: 'translate(-50%, -50%)' }}
-                  className={`flex items-center justify-center h-16 w-16 rounded-full border-2 border-white/40 shadow-lg transition-transform duration-200 focus:outline-none ${
+                  className={`flex items-center justify-center w-[12%] h-[12%] sm:h-14 sm:w-14 lg:h-16 lg:w-16 rounded-full border-2 border-white/40 shadow-lg transition-transform duration-200 focus:outline-none ${
                     estado === 'green'
                       ? 'bg-emerald-600 text-white'
                       : estado === 'blue'
@@ -946,7 +909,7 @@ function RoscoScreen() {
                       : 'bg-amber-400 text-slate-900'
                   } ${letraSeleccionada === dato.letra ? 'scale-125 ring-4 ring-white/30' : 'hover:scale-110'}`}
                 >
-                  <span className="font-serif font-bold text-xl select-none">{dato.letra}</span>
+                  <span className="font-serif font-bold text-sm sm:text-xl select-none">{dato.letra}</span>
                 </button>
               )
             })}
