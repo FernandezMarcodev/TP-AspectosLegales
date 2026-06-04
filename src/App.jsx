@@ -106,7 +106,7 @@ const roscoPassword = 'rosco2026'
 
 // Definiciones para ROSCO
 const roscoDatos = [
-  { letra: 'A', definicion: 'Acción que otorga derechos sobre obras creadas', respuesta: 'Autoría' },
+  { letra: 'A', definicion: 'País en el cual para ser dueño de una marca es obligatorio registrarla en el "INPI"', respuesta: 'Argentina' },
   { letra: 'B', definicion: 'Apellido del inventor de origen Húngaro que patentó en argentina la "lapicera"', respuesta: 'Biro' },
   { letra: 'C', definicion: 'Se usa la de "NIZA" para dividir productos y servicios en diferentes categorías al registrar una marca', respuesta: 'Clasificación' },
   { letra: 'D', definicion: 'Es la capacidad que debe tener un signo para poder ser una marca y diferenciar productos', respuesta: 'Distintiva' },
